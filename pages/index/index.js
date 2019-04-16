@@ -130,6 +130,7 @@ Page({
       }
       // 添加车辆按钮
       case 6: {
+        vat locationInfo = that.getLocationInfo();
         // 获取当前已有的车辆
         var bikes = that.data.markers;
         bikes.push({
@@ -155,30 +156,21 @@ Page({
     }
   },
   /**
-   * 中心点坐标移动时触发
-   */
-  regionchange: function (e) {
-    console.log(1);
-    var that = this;
-    var etype = e.type;
-    if (etype == "end") {
-      this.mapCtx.getCenterLocation({
-        success: function (res) {
-          var long = res.longitude;
-          var lat = res.latitude;
-          that.setData({
-            long: long,
-            lat: lat
-          })
-        }
-      })
-    }
-  },
-  /**
    * 页面初次渲染完成时触发改事件
    */
   onReady: function () {
     // 创建map上下文
     this.mapCtx = wx.createMapContext("myMap");
+  },
+  getLocationInfo: function () {
+    var long;
+    var lat;
+    this.mapCtx.getCenterLocation({
+      success: function (res) {
+        long = res.longitude;
+        lat = res.latitude;
+      }
+    })
+    return 1;
   }
 })
