@@ -1,4 +1,5 @@
-<map id="myMap"
+<map
+ id="myMap"
  longitude="{{long}}"
  latitude="{{lat}}"
  controls="{{controls}}"
@@ -7,4 +8,6 @@
  bindcontroltap="controltap"
  style="width:100%; height:100%"
  markers="{{markers}}"
- ></map>
+ bindregionchange="regionchange"
+/>
+

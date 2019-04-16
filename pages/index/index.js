@@ -10,7 +10,9 @@ Page({
     // 控件
     controls: [],
     // 车辆图标
-    markers: []
+    markers: [],
+    // 当前中心点坐标信息
+    locationInfo: {}
   },
   /**
    * 页面初始化时加载
@@ -130,23 +132,25 @@ Page({
       }
       // 添加车辆按钮
       case 6: {
-        vat locationInfo = that.getLocationInfo();
+        console.log(that.data.locationInfo);
         // 获取当前已有的车辆
         var bikes = that.data.markers;
-        bikes.push({
-          iconPath: "/images/bike.png",
-          width: 35,
-          height: 40,
-          longitude: that.data.long,
-          latitude: that.data.lat
-        },
+        bikes.push(
           {
             iconPath: "/images/bike.png",
             width: 35,
             height: 40,
-            longitude: that.data.long,
-            latitude: that.data.lat
-          });
+            longitude: that.data.locationInfo.long,
+            latitude: that.data.locationInfo.lat
+          },
+          {
+            iconPath: "/images/bike.png",
+            width: 35,
+            height: 40,
+            longitude: that.data.locationInfo.long,
+            latitude: that.data.locationInfo.lat
+          }
+        );
         // 赋值
         that.setData({
           markers: bikes
@@ -162,15 +166,20 @@ Page({
     // 创建map上下文
     this.mapCtx = wx.createMapContext("myMap");
   },
-  getLocationInfo: function () {
-    var long;
-    var lat;
+  /**
+   * 获取中心点经纬度
+   */
+  regionchange: function (e) {
+    var that = this;
     this.mapCtx.getCenterLocation({
       success: function (res) {
-        long = res.longitude;
-        lat = res.latitude;
+        that.setData({
+          locationInfo: {
+            long: res.longitude,
+            lat: res.latitude
+          }
+        })
       }
     })
-    return 1;
   }
 })
