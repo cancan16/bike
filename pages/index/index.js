@@ -96,5 +96,19 @@ Page({
         })
       }
     })
+  },
+  // 控件点击时触发事件
+  controltap: function (e) {
+    var cid = e.controlId;
+    if (cid == 2) {
+      this.mapCtx.moveToLocation();
+    }
+  },
+  /**
+   * 页面初次渲染完成时触发改事件
+   */
+  onReady: function () {
+    // 创建map上下文
+    this.mapCtx = wx.createMapContext("myMap");
   }
 })
