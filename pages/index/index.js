@@ -132,9 +132,8 @@ Page({
       }
       // 添加车辆按钮
       case 6: {
-        console.log(that.data.locationInfo);
+        var bikes = [];
         // 获取当前已有的车辆
-        var bikes = that.data.markers;
         bikes.push(
           {
             iconPath: "/images/bike.png",
@@ -151,6 +150,7 @@ Page({
             latitude: that.data.locationInfo.lat
           }
         );
+        this.addBike(that.data.locationInfo.long, that.data.locationInfo.lat);
         // 赋值
         that.setData({
           markers: bikes
@@ -179,6 +179,22 @@ Page({
             lat: res.latitude
           }
         })
+      }
+    })
+  },
+  /**
+   * 保存单车信息
+   */
+  addBike: function (long, lat) {
+    wx.request({
+      url: "http://localhost:8889/addBike",
+      data: {
+        longitude: long,
+        latitude: lat
+      },
+      method: "POST",
+      success: function (res) {
+        console.log(res);
       }
     })
   }
