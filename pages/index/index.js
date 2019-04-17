@@ -66,6 +66,7 @@ Page({
               //是否可点击
               clickable: true
             },
+            // 扫码
             {
               id: 3,
               iconPath: "/images/qrcode.png",
@@ -125,6 +126,19 @@ Page({
     var that = this;
     var cid = e.controlId;
     switch (cid) {
+      // 点击扫码
+      case 3: {
+        console.log("用户扫码");
+        var status = getApp().globalData.status
+        // 跳转到注册页面
+        if (status == 0) {
+          wx.navigateTo({
+            url: "../register/register"
+          })
+
+        }
+        break;
+      }
       // 定位按钮
       case 2: {
         this.mapCtx.moveToLocation();
