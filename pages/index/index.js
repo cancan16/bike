@@ -26,8 +26,15 @@ Page({
         var lat = res.latitude;
         that.setData({
           long: long,
-          lat: lat
-        })
+          lat: lat,
+          locationInfo: {
+            long: long,
+            lat: lat
+          }
+        });
+        // 加载附近车辆
+        console.log("初始化页面加载");
+        that.findNearBike(long, lat);
       }
     })
     /**
@@ -146,29 +153,18 @@ Page({
       }
       // 添加车辆按钮
       case 6: {
-        var bikes = [];
-        // 获取当前已有的车辆
-        bikes.push(
-          {
-            iconPath: "/images/bike.png",
-            width: 35,
-            height: 40,
-            longitude: that.data.locationInfo.long,
-            latitude: that.data.locationInfo.lat
-          },
-          {
-            iconPath: "/images/bike.png",
-            width: 35,
-            height: 40,
-            longitude: that.data.locationInfo.long,
-            latitude: that.data.locationInfo.lat
-          }
-        );
-        this.addBike(that.data.locationInfo.long, that.data.locationInfo.lat);
-        // 赋值
-        that.setData({
-          markers: bikes
+        var markers = that.data.markers;
+        markers.push({
+          iconPath: "/images/bike.png",
+          width: 35,
+          height: 40,
+          longitude: that.data.locationInfo.long,
+          latitude: that.data.locationInfo.lat
         })
+        that.setData({
+          markers: markers
+        })
+        this.addBike(that.data.locationInfo.long, that.data.locationInfo.lat);
         break;
       }
     }
@@ -193,6 +189,7 @@ Page({
             lat: res.latitude
           }
         })
+        that.findNearBike(res.longitude, res.latitude);
       }
     })
   },
@@ -210,6 +207,39 @@ Page({
       method: "POST",
       success: function (res) {
         console.log(res);
+      }
+    })
+  },
+  /**
+   * 获取中心点坐标附近的单车
+   */
+  findNearBike: function (long, lat) {
+    var that = this;
+    wx.request({
+      url: "http://localhost:8889/findNearBike",
+      header: { 'content-type': 'application/x-www-form-urlencoded' },
+      data: {
+        longitude: long,
+        latitude: lat
+      },
+      method: "POST",
+      success: function (res) {
+        var bikes = [];
+        var bikesResult = res.data;
+        if (bikesResult.length > 0) {
+          for (var i in bikesResult) {
+            bikes.push({
+              iconPath: "/images/bike.png",
+              width: 35,
+              height: 40,
+              longitude: bikesResult[i].content.location[0],
+              latitude: bikesResult[i].content.location[1]
+            })
+          }
+        }
+        that.setData({
+          markers: bikes
+        })
       }
     })
   }
