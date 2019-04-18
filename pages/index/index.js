@@ -203,8 +203,9 @@ Page({
     wx.request({
       url: "http://localhost:8889/addBike",
       data: {
-        longitude: long,
-        latitude: lat
+        location: [
+          long, lat
+        ]
       },
       method: "POST",
       success: function (res) {

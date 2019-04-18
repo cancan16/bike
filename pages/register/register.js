@@ -107,7 +107,7 @@ Page({
     var verifyCode = e.detail.value.verifyCode
     //发送手机号和验证码进行校验
     wx.request({
-      url: "http://localhost:9999/verify",
+      url: "http://localhost:8889/user/verify",
       header: { 'content-type': 'application/x-www-form-urlencoded' },
       data: {
         phoneNum: phoneNum,
@@ -119,7 +119,7 @@ Page({
         if (res.data) {
           wx.request({
             //微信小程序成产环境请求的协议必须是https，地址必须是域名，不能带端口号
-            url: "http://localhost:9999/reg",
+            url: "http://localhost:8889/user/reg",
             header: { 'content-type': 'application/x-www-form-urlencoded' },
             data: e.detail.value,
             method: 'POST',
