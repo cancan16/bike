@@ -224,19 +224,17 @@ Page({
       },
       method: "POST",
       success: function (res) {
-        var bikes = [];
-        var bikesResult = res.data;
-        if (bikesResult.length > 0) {
-          for (var i in bikesResult) {
-            bikes.push({
-              iconPath: "/images/bike.png",
-              width: 35,
-              height: 40,
-              longitude: bikesResult[i].content.location[0],
-              latitude: bikesResult[i].content.location[1]
-            })
+        console.log(res.data);
+        var bikes = res.data.map((bike) => {
+          return {
+            id: bike.id,
+            iconPath: '/images/bike.png',
+            longitude: bike.content.location[0],
+            latitude: bike.content.location[1],
+            width: 35,
+            height: 40
           }
-        }
+        })
         that.setData({
           markers: bikes
         })
